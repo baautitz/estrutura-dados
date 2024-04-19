@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "Ponto.h"
+#include "lib/Ponto.h"
 
 void main() {
     float d;
