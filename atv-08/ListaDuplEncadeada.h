@@ -14,6 +14,8 @@ void lista_libera(Lista *lista);
 
 int lista_tamanho(Lista *lista);
 
+int lista_define(Lista *lista, Pessoa pessoa, int posicao);
+
 int lista_insere(Lista *lista, Pessoa pessoa, int posicao);
 int lista_insere_inicio(Lista *lista, Pessoa pessoa);
 int lista_insere_final(Lista *lista, Pessoa pessoa);

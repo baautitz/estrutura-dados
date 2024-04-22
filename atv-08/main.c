@@ -56,22 +56,47 @@ int main() {
   lista_libera(lista);
   // --------------------------
 
-  // Testando inserir por posição
+  // Testando definir por posição
   lista = lista_cria();
 
-  printf("\nTestando inserir por posição:\n");
+  printf("\nTestando definir por posição:\n");
 
-  int aux = 1;
   for (int i = 0; i < 5; i++) {
-    lista_insere(lista, p1, i);
+    lista_define(lista, p1, i);
     imprime_lista(lista);
   }
 
   Pessoa pTeste = {"1", "Teste123", 5};
   for (int i = 5; i > 0; i--) {
-    lista_insere(lista, pTeste, i - 1);
+    lista_define(lista, pTeste, i - 1);
     imprime_lista(lista);
   }
+
+  lista_libera(lista);
+  // --------------------------
+
+  // Testando inserir por posição
+  lista = lista_cria();
+
+  printf("\nTestando inserir por posição:\n");
+
+  lista_insere(lista, p1, 0);
+  imprime_lista(lista);
+
+  lista_insere(lista, p2, 0);
+  imprime_lista(lista);
+
+  lista_insere(lista, p3, 0);
+  imprime_lista(lista);
+
+  lista_insere(lista, p3, 2);
+  imprime_lista(lista);
+
+  lista_insere(lista, p2, 4);
+  imprime_lista(lista);
+
+  lista_insere(lista, p1, 4);
+  imprime_lista(lista);
 
   lista_libera(lista);
   // --------------------------

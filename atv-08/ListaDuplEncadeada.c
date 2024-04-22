@@ -45,7 +45,7 @@ void lista_libera(Lista *lista) {
   free(lista);
 }
 
-int lista_insere(Lista *lista, Pessoa pessoa, int posicao) {
+int lista_define(Lista *lista, Pessoa pessoa, int posicao) {
   if (lista == NULL) return 0;
 
   int tamanhoLista = lista_tamanho(lista);
@@ -64,6 +64,42 @@ int lista_insere(Lista *lista, Pessoa pessoa, int posicao) {
   }
 
   no->dados = pessoa;
+
+  return 1;
+}
+
+int lista_insere(Lista *lista, Pessoa pessoa, int posicao) {
+  if (lista == NULL) return 0;
+
+  int tamanhoLista = lista_tamanho(lista);
+  if (posicao < 0) return 0;
+  if (posicao > tamanhoLista) return 0;
+
+  if (posicao == 0) {
+    return lista_insere_inicio(lista, pessoa);
+  }
+
+  if (posicao == tamanhoLista) {
+    return lista_insere_final(lista, pessoa);
+  }
+
+  Elemento *novoElemento = (Elemento *) malloc(sizeof(Elemento));
+  if (novoElemento == NULL) return 0;
+
+  Elemento *no = *lista;
+  int counter = 0;
+  while (counter < posicao) {
+    no = no->proximo;
+    counter++;
+  }
+
+  novoElemento->anterior = no->anterior;
+  novoElemento->proximo = no;
+
+  no->anterior->proximo = novoElemento;
+  no->anterior = novoElemento;
+
+  novoElemento->dados = pessoa;
 
   return 1;
 }
