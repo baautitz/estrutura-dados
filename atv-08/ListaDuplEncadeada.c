@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "ListaDuplEncadeada.h"
 
 typedef struct elemento {
@@ -151,9 +152,19 @@ int lista_insere_final(Lista *lista, Pessoa pessoa) {
 
 int lista_remove(Lista *lista, int posicao) {
   if (lista == NULL) return 0;
-  if (*lista == NULL) return 0;
+
+  int tamanhoLista = lista_tamanho(lista);
+  if (tamanhoLista == 0) return 0;
   if (posicao < 0) return 0;
-  if (posicao >= lista_tamanho(lista)) return 0;
+  if (posicao >= tamanhoLista) return 0;
+
+  if (posicao == 0) {
+    return lista_remove_inicio(lista);
+  }
+
+  if (posicao == tamanhoLista - 1) {
+    return lista_remove_final(lista);
+  }
 
   Elemento *no = *lista;
   int counter = 0;
@@ -175,11 +186,14 @@ int lista_remove_inicio(Lista *lista) {
   if (*lista == NULL) return 0;
 
   Elemento *no = *lista;
-  (*lista)->proximo->anterior = NULL;
-  *lista = (*lista)->proximo;
+  if (no->proximo == NULL) {
+    *lista = NULL;
+  } else {
+    no->proximo->anterior = NULL;
+    *lista = no->proximo;
+  }
 
   free(no);
-
   return 1;
 }
 
@@ -188,14 +202,17 @@ int lista_remove_final(Lista *lista) {
   if (*lista == NULL) return 0;
 
   Elemento *no = *lista;
-  while (no->proximo != NULL) {
-    no = no->proximo;
+  if (no->proximo == NULL) {
+    *lista = NULL;
+  } else {
+    while (no->proximo != NULL) {
+      no = no->proximo;
+    }
+
+    no->anterior->proximo = NULL;
   }
 
-  no->anterior->proximo = NULL;
-
   free(no);
-
   return 1;
 }
 
@@ -222,14 +239,15 @@ int lista_busca_cpf(Lista *lista, char *cpf, Pessoa *pessoa) {
   if (*lista == NULL) return 0;
 
   Elemento *no = *lista;
+
   int encontrou = 0;
-  while (no->proximo != NULL) {
-    no = no->proximo;
-
-    if (strcmp(cpf, no->dados.cpf) != 0) continue;
-
-    encontrou = 1;
-    break;
+  while (no != NULL) {
+    if (strcmp(cpf, no->dados.cpf) != 0) {
+      no = no->proximo;
+    } else {
+      encontrou = 1;
+      break;
+    }
   }
 
   if (encontrou)
